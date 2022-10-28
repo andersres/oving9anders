@@ -12,5 +12,13 @@ class Avtale:
     def __str__(self): #
         return f"{self.tittel}, {self.sted}, {self.dato}, {self.varighet}"
         
-a1 = Avtale("m1", "her", "invalid", "invalid")
-print(a1)
+def nyavtale():
+   tittel=input("Tittel til avtale: ")
+   sted=input("Sted: ")
+   dato=input("Kode for datoen: ")
+   try:
+       varighet=int(input("Varighet: "))
+   except ValueError:
+       print("Ugyldig tidverdi!")
+       
+    
