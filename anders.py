@@ -13,12 +13,20 @@ class Avtale:
         return f"{self.tittel}, {self.sted}, {self.dato}, {self.varighet}"
         
 def nyavtale():
-   tittel=input("Tittel til avtale: ")
-   sted=input("Sted: ")
-   dato=input("Kode for datoen: ")
-   try:
-       varighet=int(input("Varighet: "))
-   except ValueError:
-       print("Ugyldig tidverdi!")
+    tittel=input("Tittel til avtale: ")
+    sted=input("Sted: ")
+    while True:
+       try:
+           dato=datetime.fromisoformat(input("Kode for datoen: "))
+           break
+       except:
+           print("ugyldig")
+    while True:
+        try: 
+          varighet=int(input("Varighet: "))
+          break
+        except ValueError:
+          print("Ugyldig tidverdi!")
+    return Avtale(tittel, sted, dato, varighet)
        
-    
+print(nyavtale())
