@@ -52,10 +52,9 @@ def avtaledato(tittel,l):
         return l(tittel)
     
             
-def finneavtale(listeavtale, k): 
-    with open ("avtale.txt,", "r") as fil3: 
-        k=input("hva leter du etter?")
-        for avtalen in fil3 : 
+def finneavtale(avtale, k): 
+    k=input("hva leter du etter?")
+    for avtalen in liste_avtale : 
             if avtalen==k : 
                 print (avtalen)
             if avtalen !=k : 
