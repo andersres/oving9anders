@@ -1,0 +1,166 @@
+from datetime import datetime
+import string
+
+class Avtale:
+    def __init__ (self, tittel, sted, starttidspunkt, varighet):
+        self.tittel = tittel
+        self.sted = sted
+        self.starttidspunkt = starttidspunkt
+        self.varighet = varighet
+
+
+#Oppgave e
+    def __str__ (self):
+        return f"\nAvtale:\n Tittel: {self.tittel}\n Sted: {self.sted}\n Klokken: {self.starttidspunkt}\n Varighet: {self.varighet} minutter\n"
+
+
+#Oppgave f
+def ny_avtale():
+    tittel = input("Skriv inn hva avtalen er: ")
+    sted = input("Skriv inn stedet avtalen er: ")
+
+    starttidspunkt = input("Skriv inn starttidspunktet med formatet [ÅÅÅÅ-MM-DD TT:MM:SS]: ")
+    if starttidspunkt:
+        starttidspunkt = datetime.fromisoformat(starttidspunkt)
+    else:
+        starttidspunkt = datetime.now()
+
+    while True:
+        try:
+            varighet = int(input("Skriv inn varigheten: "))
+            break
+        except ValueError:
+            print("Varighet må være et tall!")
+
+    return Avtale(tittel, sted, starttidspunkt, varighet)
+
+#Oppgave g
+
+def utskrift(avtaler):
+    print("Overskrift")
+    for i, avtale in enumerate(avtaler):
+        print(f"{i}. Avtale: {avtale.tittel}")
+
+
+#Oppgave h
+
+def lagre_avtaler(avtaler: list):
+    with open("avtaler.txt", "w") as fil:
+        for avtale in avtaler:
+            linje = f"{avtale.tittel},{avtale.sted},{avtale.starttidspunkt},{avtale.varighet}\n"
+            fil.write(linje)
+
+
+#Oppgave i
+
+def leser_file(filnavn = "avtaler.txt"):
+    avtaler = []
+    with open(filnavn, "r") as fil:
+        for linje in fil:
+            linje = string.split(",")
+            date = datetime.fromisoformat(linje[2])
+            avtaler.append(Avtale(linje[0], linje[1], date, linje[3].strip()))
+    return avtaler
+
+
+#Oppgave j
+def avtale_dato(avtale, dato):
+
+    dato_avtale = []
+
+    for avtale in avtale:
+
+        if dato == avtale.start_time.date():
+
+            dato_avtale.append(avtale)
+
+    return dato_avtale
+
+
+#Oppgave k
+def avtale_string(avtale, string):
+
+    string_avtale = []
+
+    for avtale in avtale:
+
+        if string in avtale.title:
+
+            string_avtale.append(avtale)
+
+    return string_avtale
+
+
+#Oppgave l og m
+
+def Meny():
+    print("Velkommen til avtalemenyen!")
+    avtaler = []
+    while True:
+        print("\nDu har disse valgene (skriv inn tall): ")
+        print("1. Les inn avtale fra fil")
+        print("2. Skriv avtaler til fil")
+        print("3. Skriv inn en ny avtale")
+        print("4. Skriv ut alle avtalene")
+        print("5. Slett avtale")
+        print("6. Rediger avtale")
+        print("7. Avslutt")
+
+        valg = input("\n> ")
+        if valg == "1":
+            filnavn = input("\nSkriv inn filnavn:\n> ")
+            avtaler = leser_file(filnavn)
+            utskrift(avtaler)
+        if valg == "2":
+            lagre_avtaler(avtaler)
+            print("\nFilene har blitt lagret.\n")
+        if valg == "3":
+            print("")
+            avtaler.append(ny_avtale())
+            print("Avtalen er lagret.")
+        if valg == "4":
+            utskrift(avtaler)
+        if valg == "5":
+            utskrift(avtaler)
+            avtale_index = int(input("\nVelg hvilken avtale du vil slette:\n> "))
+            avtaler.pop(avtale_index)
+        if valg == "6":
+            utskrift(avtaler)
+            avtale_index = int(input("\nVelg hvilken avtale du vil redigere:\n> "))
+            avtaler[avtale_index] = Rediger_avtale(avtaler[avtale_index])
+        if valg == "7":
+            break
+
+#Oppgave n
+
+def Rediger_avtale(avtale: Avtale):
+    print(avtale)
+    egenskap = input("Velg hvilke egenskap du vil endre: ")
+    if egenskap == "1":
+        avtale.tittel = input("Skriv inn en ny tittel: ")
+
+    if egenskap == "2":
+        avtale.sted = input("Skriv inn et nytt sted: ")
+
+    if egenskap == "3":
+        starttidspunkt = input("Skriv inn starttidspunktet med formatet [ÅÅÅÅ-MM-DD TT:MM:SS]: ")
+        if starttidspunkt:
+            starttidspunkt = datetime.fromisoformat(starttidspunkt)
+        else:
+            starttidspunkt = datetime.now()
+        avtale.starttidspunkt = starttidspunkt
+
+    if egenskap == "4":
+        while True:
+            try:
+                varighet = int(input("Skriv inn varigheten: "))
+                break
+            except ValueError:
+                print("Varighet må være et tall!")
+        avtale.varighet = varighet
+
+    return avtale
+
+
+if __name__ == "__main__":
+    Meny()
