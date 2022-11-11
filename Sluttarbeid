@@ -164,3 +164,46 @@ def Rediger_avtale(avtale: Avtale):
 
 if __name__ == "__main__":
     Meny()
+    
+       
+class Kategori:
+    def __init__(self, id, navn, prioritet=1):
+        self.id=id
+        self.navn=navn
+        self.prioritet=prioritet
+        
+    def __str__(self):
+        return f"{self.id_avtale}, {self.navn}, {self.prioritet}"
+
+def utskrift_kategorier(kategori_liste):
+    print("Overskrift")
+    for i, kategori in enumerate(kategori_liste):
+        kategori_string = f"Kategiro id: {kategori.id}, navn: {kategori.navn}, prioritet: {kategori.prioritet}"
+        print(kategori_string)
+
+mine_kat=[]  
+def ny_kategori():
+    id_avtale=input("Hva er id-en:")
+    navn=input("Navn: ")
+    prioritet=int(input("Prioritet: "))
+    kategori_ny=Kategori(id_avtale, navn, prioritet)
+    mine_kat.append(kategori_ny)
+
+def skrive_kategorier_til_fil(liste_med_kategorier):
+    with open("kategorifil.txt", "w+", encoding="UTF-8") as file:
+        for kategori in liste_med_kategorier:
+            file.write(f"{kategori.id};{kategori.navn};{kategori.prioritet}")
+
+def lese_kategorier_fra_fil():
+    liste_med_kategorier = []
+
+    with open("kategorifil.txt", "r", encoding="UTF-8") as tekst:
+        for linje in tekst:
+            #    "12;anders;3"
+            splittet_line = linje.split(";")
+            kategorien = Kategori(splittet_line[0], splittet_line[1], int(splittet_line[2]))
+            liste_med_kategorier.append(kategorien)
+    return liste_med_kategorier
+
+ny_kategori()
+skrive_kategorier_til_fil(mine_kat)
